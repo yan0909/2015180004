@@ -1,5 +1,6 @@
 from pico2d import *
 import random
+import main_state
 
 class Enemy:
     image = None
@@ -23,6 +24,7 @@ class Enemy:
         self.die_frame = 0
         self.alive_frame = 0
         self.f_speed = 0
+        self.isHit = False # 이 적이 성을 때렸는지 안때렸는지.
     def update(self):
         if(self.state == 0 or self.state == 1):
             self.x += self.speed
@@ -35,6 +37,9 @@ class Enemy:
             if(self.y > 178 and self.y <= 197 and self.x >= 404):
                 self.x = 404
                 self.state = 1
+            if(self.state == 1 and self.frame == 0):
+                self.isHit = True
+
         elif(self.state == 3):
             self.f_speed += 0.3
             self.y -= self.f_speed
@@ -54,6 +59,7 @@ class Enemy:
             self.alive_frame += 1
 
         self.frame = (self.frame + 1) % (4 * 10)
+
     def draw(self):
         if(self.state == 0 or self.state == 2 or self.state == 3):
             self.image.clip_draw(math.floor(self.frame / 10) % 4 * 50, 75, 50, 75, self.x, self.y)
@@ -63,5 +69,37 @@ class Enemy:
             self.die_image.clip_draw(math.floor(self.die_frame / 12) * 70, 0 ,70, 100, self.x, self.y)
         elif(self.state == 5):
             self.alive_image.clip_draw(math.floor(self.alive_frame / 10) * 70, 0, 70, 60, self.x, self.y)
+        #print(self.state, self.frame, self.frame % 4, self.frame % 5, self.x, self.y)
+    pass
+
+class Enemy02(Enemy):
+    def __init__(self):
+        self.x, self.y = 0,random.randint(146, 197)
+        self.first_y = self.y
+        self.last_y = None
+        self.width = 75
+        self.height = 75
+        self.speed = random.randint(1,2) / 2
+        if(Enemy.image == None):
+            self.image = load_image('enemy02_animation.png')
+        if(Enemy.die_image == None):
+            self.die_image = load_image('enemy01_die.png')
+        if(Enemy.alive_image == None):
+            self.alive_image = load_image('enemy02_alive.png')
+        self.state = 0
+        self.frame = 0
+        self.die_frame = 0
+        self.alive_frame = 0
+        self.f_speed = 0
+        self.isHit = False
+    def draw(self):
+        if(self.state == 0 or self.state == 2 or self.state == 3):
+            self.image.clip_draw(math.floor(self.frame / 10) % 4 * 75, 75, 75, 75, self.x, self.y)
+        elif(self.state == 1):
+            self.image.clip_draw(math.floor(self.frame / 10) % 4 * 75, 0, 75, 75, self.x, self.y)
+        elif(self.state == 4 and self.die_frame < 6 * 12):
+            self.die_image.clip_draw(math.floor(self.die_frame / 12) * 70, 0 ,70, 100, self.x, self.y)
+        elif(self.state == 5):
+            self.alive_image.clip_draw(math.floor(self.alive_frame / 10) * 75, 0, 75, 60, self.x, self.y)
         #print(self.state, self.frame, self.frame % 4, self.frame % 5, self.x, self.y)
     pass

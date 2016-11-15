@@ -2,6 +2,24 @@ from pico2d import *
 import main_state
 import start_menu
 
+
+
+
+class Singletone:
+    def __init__(self):
+        self.stage = 5
+    pass
+
+st = Singletone()
+
+def upStage():
+    global st
+    st.stage += 1
+
+def getStage():
+    global st
+    return st.stage
+
 class GameState:
     def __init__(self, state):
         self.enter = state.enter
@@ -87,6 +105,7 @@ def run(start_state):
         stack[-1].handle_events()
         stack[-1].update()
         stack[-1].draw()
+        #print(getStage())
     # repeatedly delete the top of the stack
     while (len(stack) > 0):
         stack[-1].exit()
