@@ -94,9 +94,9 @@ class Enemy02(Enemy):
         self.isHit = False
     def draw(self):
         if(self.state == 0 or self.state == 2 or self.state == 3):
-            self.image.clip_draw(math.floor(self.frame / 10) % 4 * 75, 75, 75, 75, self.x, self.y)
+            self.image.clip_draw(math.floor(self.frame / 10) % 4 * 80, 75, 80, 75, self.x, self.y)
         elif(self.state == 1):
-            self.image.clip_draw(math.floor(self.frame / 10) % 4 * 75, 0, 75, 75, self.x, self.y)
+            self.image.clip_draw(math.floor(self.frame / 10) % 4 * 80, 0, 80, 75, self.x, self.y)
         elif(self.state == 4 and self.die_frame < 6 * 12):
             self.die_image.clip_draw(math.floor(self.die_frame / 12) * 70, 0 ,70, 100, self.x, self.y)
         elif(self.state == 5):
