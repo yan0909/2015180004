@@ -57,7 +57,7 @@ def handle_events():
             mx = event.x
             my = 599 - event.y
             TargetEnemyIndex = -1
-            for i in range(EnemyCount):
+            for i in range(EnemyCount * 2):
                 if(EnemyTeam[i].state == 0 or EnemyTeam[i].state == 1):
                    if(EnemyTeam[i].x - EnemyTeam[i].width / 2 <= mx and mx <= EnemyTeam[i].x + EnemyTeam[i].width / 2
                    and EnemyTeam[i].y - EnemyTeam[i].height / 2 <= my and my <= EnemyTeam[i].y + EnemyTeam[i].height / 2):

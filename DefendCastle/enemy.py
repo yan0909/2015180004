@@ -100,6 +100,6 @@ class Enemy02(Enemy):
         elif(self.state == 4 and self.die_frame < 6 * 12):
             self.die_image.clip_draw(math.floor(self.die_frame / 12) * 70, 0 ,70, 100, self.x, self.y)
         elif(self.state == 5):
-            self.alive_image.clip_draw(math.floor(self.alive_frame / 10) * 75, 0, 75, 60, self.x, self.y)
+            self.alive_image.clip_draw(math.floor(self.alive_frame / 10) * 70, 0, 70, 60, self.x, self.y)
         #print(self.state, self.frame, self.frame % 4, self.frame % 5, self.x, self.y)
     pass
