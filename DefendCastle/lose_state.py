@@ -1,13 +1,15 @@
 from pico2d import *
 import game_framework
+import start_menu
 import main_state
 
-name = 'Clear'
+name = 'Lose'
 image = None
+logo_time = 0.0
 
 def enter():
     global image
-    image = load_image('clear.png')
+    image = load_image('lose.png')
 
 def exit():
     global image
@@ -15,13 +17,12 @@ def exit():
     pass
 
 def update():
-    #print(game_framework.getStage())
     pass
 
 def draw():
     global image
     clear_canvas()
-    image.draw(400, 300, 800,600)
+    image.draw(400, 300)
     update_canvas()
     pass
 
@@ -45,6 +46,9 @@ def handle_events():
                 #game_framework.quit()
                 exit()
             elif (event.type == SDL_MOUSEBUTTONDOWN):
-                if(485 < event.x and event.x < 565 and 45 < 599 - event.y and 599 - event.y < 87):
-                    game_framework.change_state(main_state)
-                print(event.x, 599 - event.y)
+                if (event.x >= 365 and event.x <= 439 and 599 - event.y >= 59 and 599 - event.y <= 97):
+                    game_framework.change_state(start_menu)
+
+
+                #print(event.x)
+                #print(599 - event.y)

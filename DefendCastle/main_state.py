@@ -3,10 +3,12 @@ import enemy
 import random
 import game_framework
 import clear_state
+import lose_state
 import math
 
 EnemyCount, background, castle, CloudTeam, EnemyTeam, TargetEnemyIndex, isMouseDown = None, None, None, None, None, -1, False
 playTime = 0.0
+mx, my = 0, 0
 class Castle:
     def __init__(self):
         self.castle = load_image('castle.png')
@@ -43,8 +45,10 @@ def handle_events():
             game_framework.quit()
         elif(event.type == SDL_KEYDOWN and event.key == SDLK_ESCAPE):
             game_framework.quit()
-        elif (event.type == SDL_KEYDOWN and event.key == SDLK_1):
+        elif (event.type == SDL_KEYDOWN and event.key == SDLK_1):   # 치트키
             game_framework.change_state(clear_state)
+        elif (event.type == SDL_KEYDOWN and event.key == SDLK_2):   # 치트키
+            game_framework.change_state(lose_state)
         elif(event.type == SDL_MOUSEMOTION):
             mx = event.x
             my = 599 - event.y
@@ -65,7 +69,6 @@ def handle_events():
                         EnemyTeam[i].state = 2
                         EnemyTeam[i].f_speed = 0
                         break
-
         if(event.type == SDL_MOUSEBUTTONUP or (isMouseDown == True and mx == 0 or mx == 799 or my == 0 or my == 599)):
             isMouseDown = False
             if(TargetEnemyIndex != -1):
@@ -76,7 +79,7 @@ def handle_events():
 
 
 def enter():
-    global EnemyCount, background, castle, CloudTeam, EnemyTeam, castle
+    global EnemyCount, background, castle, CloudTeam, EnemyTeam, castle, playTime
     EnemyCount = random.randint(5,10)
 
     castle = Castle()
@@ -97,6 +100,8 @@ def enter():
 
         print(i, ";", EnemyTeam[i].x)
 
+    playTime = 0.0
+
 def update():
     global CloudTeam, EnemyTeam, castle, playTime
     for c in CloudTeam:
@@ -106,7 +111,11 @@ def update():
         if e.isHit:
             castle.castleHP -= 1
             e.isHit = False
-    print(game_framework.getStage())
+    if castle.castleHP == 0:
+        game_framework.change_state(lose_state)
+
+    #print(game_framework.getStage())
+    #print(playTime)
     if playTime >= 50.0:
         game_framework.upStage()
         game_framework.change_state(clear_state)
