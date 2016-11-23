@@ -2,7 +2,7 @@ from pico2d import *
 import random
 import main_state
 
-class Enemy:
+class Enemy:            # Normal_Enemy 로 바꾸기
     image = None
     die_image = None
     alive_image = None
@@ -72,7 +72,7 @@ class Enemy:
         #print(self.state, self.frame, self.frame % 4, self.frame % 5, self.x, self.y)
     pass
 
-class Enemy02(Enemy):
+class Enemy02(Enemy):           #
     def __init__(self):
         self.x, self.y = 0,random.randint(146, 197)
         self.first_y = self.y
