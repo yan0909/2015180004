@@ -11,8 +11,8 @@ playTime = 0.0
 mx, my = 0, 0
 class Castle:
     def __init__(self):
-        self.castle = load_image('castle.png')
-        self.castleHPBar = load_image('Red.png')
+        self.castle = load_image('resource/castle.png')
+        self.castleHPBar = load_image('resource/red.png')
         self.castleHP = 100.0
 
     def draw(self):
@@ -84,9 +84,9 @@ def enter():
 
     castle = Castle()
     #print(background)
-    background = load_image('background.png')
+    background = load_image('resource/background.png')
     print(background)
-    CloudTeam = [Cloud('cloud01.png'), Cloud('cloud01.png'),Cloud('cloud02.png'),Cloud('cloud02.png')]
+    CloudTeam = [Cloud('resource/cloud01.png'), Cloud('resource/cloud01.png'),Cloud('resource/cloud02.png'),Cloud('resource/cloud02.png')]
     EnemyTeam = []
 
     for i in range(EnemyCount):

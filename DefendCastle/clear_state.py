@@ -7,7 +7,7 @@ image = None
 
 def enter():
     global image
-    image = load_image('clear.png')
+    image = load_image('resource/clear.png')
 
 def exit():
     global image

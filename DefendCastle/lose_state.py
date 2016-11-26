@@ -9,7 +9,7 @@ logo_time = 0.0
 
 def enter():
     global image
-    image = load_image('lose.png')
+    image = load_image('resource/lose.png')
 
 def exit():
     global image

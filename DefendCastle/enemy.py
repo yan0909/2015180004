@@ -2,7 +2,7 @@ from pico2d import *
 import random
 import main_state
 
-class Enemy:            # Normal_Enemy 로 바꾸기
+class Normal_Enemy:            # Normal_Enemy 로 바꾸기
     image = None
     die_image = None
     alive_image = None
@@ -13,12 +13,12 @@ class Enemy:            # Normal_Enemy 로 바꾸기
         self.width = 50
         self.height = 75
         self.speed = random.randint(1,2) / 2
-        if(Enemy.image == None):
-            self.image = load_image('enemy01_animation.png')
-        if(Enemy.die_image == None):
-            self.die_image = load_image('enemy01_die.png')
-        if(Enemy.alive_image == None):
-            self.alive_image = load_image('enemy01_alive.png')
+        if(Normal_Enemy.image == None):
+            self.image = load_image('resource/enemy01_animation.png')
+        if(Normal_Enemy.die_image == None):
+            self.die_image = load_image('resource/enemy01_die.png')
+        if(Normal_Enemy.alive_image == None):
+            self.alive_image = load_image('resource/enemy01_alive.png')
         self.state = 0
         self.frame = 0
         self.die_frame = 0
@@ -72,20 +72,21 @@ class Enemy:            # Normal_Enemy 로 바꾸기
         #print(self.state, self.frame, self.frame % 4, self.frame % 5, self.x, self.y)
     pass
 
-class Enemy02(Enemy):           #
+class Enemy02(Normal_Enemy):
     def __init__(self):
+        Normal_Enemy.__init__()
         self.x, self.y = 0,random.randint(146, 197)
         self.first_y = self.y
         self.last_y = None
         self.width = 75
         self.height = 75
         self.speed = random.randint(1,2) / 2
-        if(Enemy.image == None):
-            self.image = load_image('enemy02_animation.png')
-        if(Enemy.die_image == None):
-            self.die_image = load_image('enemy01_die.png')
-        if(Enemy.alive_image == None):
-            self.alive_image = load_image('enemy02_alive.png')
+        if(Normal_Enemy.image == None):
+            self.image = load_image('resource/enemy02_animation.png')
+        if(Normal_Enemy.die_image == None):
+            self.die_image = load_image('resource/enemy01_die.png')
+        if(Normal_Enemy.alive_image == None):
+            self.alive_image = load_image('resource/enemy02_alive.png')
         self.state = 0
         self.frame = 0
         self.die_frame = 0
@@ -104,7 +105,7 @@ class Enemy02(Enemy):           #
         #print(self.state, self.frame, self.frame % 4, self.frame % 5, self.x, self.y)
     pass
 
-class Big_Enemy(Enemy):  #
+class Giant_Enemy(Normal_Enemy):
     def __init__(self):
         self.x, self.y = 0, random.randint(146, 197)
         self.first_y = self.y
@@ -112,12 +113,12 @@ class Big_Enemy(Enemy):  #
         self.width = 75
         self.height = 75
         self.speed = random.randint(1, 2) / 2
-        if (Enemy.image == None):
-            self.image = load_image('enemy03_animation.png')
-        if (Enemy.die_image == None):
-            self.die_image = load_image('enemy01_die.png')
-        if (Enemy.alive_image == None):
-            self.alive_image = load_image('enemy03_alive.png')
+        if (Normal_Enemy.image == None):
+            self.image = load_image('resource/enemy03_animation.png')
+        if (Normal_Enemy.die_image == None):
+            self.die_image = load_image('resource/enemy01_die.png')
+        if (Normal_Enemy.alive_image == None):
+            self.alive_image = load_image('resource/enemy03_alive.png')
         self.state = 0
         self.frame = 0
         self.die_frame = 0
