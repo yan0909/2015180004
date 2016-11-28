@@ -6,24 +6,24 @@ import clear_state
 import lose_state
 import math
 
-EnemyCount, background, castle, CloudTeam, EnemyTeam, TargetEnemyIndex, isMouseDown = None, None, None, None, None, -1, False
-playTime = 0.0
-mx, my = 0, 0
+enemy_count, background, castle, cloud_team, enemy_team, target_enemy_index, isMouseDown = None, None, None, None, None, -1, False
+stage_play_time = 0.0
+mouse_x, mouse_y = 0, 0
 class Castle:
     def __init__(self):
         self.castle = load_image('resource/castle.png')
-        self.castleHPBar = load_image('resource/red.png')
-        self.castleHP = 100.0
+        self.castle_HP_bar = load_image('resource/castle_HP.png')
+        self.castle_HP = 100.0
 
     def draw(self):
         self.castle.draw(433, 300)
-        self.castleHPBar.draw(507 + 282 / 2 / 100 * self.castleHP, 562, 282 / 100 * self.castleHP, 17)
+        self.castle_HP_bar.draw(507 + 282 / 2 / 100 * self.castle_HP, 562, 282 / 100 * self.castle_HP, 17)
 
     pass
 
 
 class Cloud:
-    def __init__(self,name):
+    def __init__(self, name):
         self.x, self.y = random.randint(900,1500),random.randint(430,500)
         self.speed = random.randint(5,10)/10
         self.image = load_image(name)
@@ -38,7 +38,7 @@ class Cloud:
     pass
 
 def handle_events():
-    global mx, my, EnemyTeam, TargetEnemyIndex, isMouseDown
+    global mouse_x, mouse_y, enemy_team, enemy_count, target_enemy_index, isMouseDown
     events = get_events()
     for event in events:
         if(event.type == SDL_QUIT):
@@ -50,94 +50,93 @@ def handle_events():
         elif (event.type == SDL_KEYDOWN and event.key == SDLK_2):   # 치트키
             game_framework.change_state(lose_state)
         elif(event.type == SDL_MOUSEMOTION):
-            mx = event.x
-            my = 599 - event.y
-            print(mx, my)
-            if(isMouseDown and TargetEnemyIndex != -1):
-                EnemyTeam[TargetEnemyIndex].x = mx
-                EnemyTeam[TargetEnemyIndex].y = my
+            mouse_x = event.x
+            mouse_y = 599 - event.y
+            print(mouse_x, mouse_y)
+            if(isMouseDown and target_enemy_index != -1):
+                enemy_team[target_enemy_index].x = mouse_x
+                enemy_team[target_enemy_index].y = mouse_y
         elif(event.type == SDL_MOUSEBUTTONDOWN):
             isMouseDown = True
-            mx = event.x
-            my = 599 - event.y
-            TargetEnemyIndex = -1
-            for i in range(EnemyCount * 2):
-                if(EnemyTeam[i].state == 0 or EnemyTeam[i].state == 1):
-                   if(EnemyTeam[i].x - EnemyTeam[i].width / 2 <= mx and mx <= EnemyTeam[i].x + EnemyTeam[i].width / 2
-                   and EnemyTeam[i].y - EnemyTeam[i].height / 2 <= my and my <= EnemyTeam[i].y + EnemyTeam[i].height / 2):
-                        TargetEnemyIndex = i
-                        EnemyTeam[i].state = 2
-                        EnemyTeam[i].f_speed = 0
-                        break
-        if(event.type == SDL_MOUSEBUTTONUP or (isMouseDown == True and mx == 0 or mx == 799 or my == 0 or my == 599)):
+            mouse_x = event.x
+            mouse_y = 599 - event.y
+            target_enemy_index = -1
+            for i in range(enemy_count * 2):
+                if(enemy_team[i].state == 'running' or enemy_team[i].state == 'attacking'):
+                   if(enemy_team[i].x - enemy_team[i].running_width / 2 <= mouse_x and mouse_x <= enemy_team[i].x + enemy_team[i].running_width / 2   # running_width 와 attacking_width 는 같음
+                   and enemy_team[i].y - enemy_team[i].running_height / 2 <= mouse_y and mouse_y <= enemy_team[i].y + enemy_team[i].running_height / 2):
+                       target_enemy_index = i
+                       enemy_team[i].state = 'dragging'
+                       enemy_team[i].falling_speed = 0
+                   break
+        if(event.type == SDL_MOUSEBUTTONUP or (isMouseDown == True and mouse_x == 0 or mouse_x == 799 or mouse_y == 0 or mouse_y == 599)):
             isMouseDown = False
-            if(TargetEnemyIndex != -1):
-                EnemyTeam[TargetEnemyIndex].state = 3
-                EnemyTeam[TargetEnemyIndex].last_y = my
-            TargetEnemyIndex = -1
+            if(target_enemy_index != -1):
+                enemy_team[target_enemy_index].state = 'falling'
+                enemy_team[target_enemy_index].falling_started_y = mouse_y
+            target_enemy_index = -1
 
 
 
 def enter():
-    global EnemyCount, background, castle, CloudTeam, EnemyTeam, castle, playTime
-    EnemyCount = random.randint(5,10)
+    global enemy_count, background, castle, cloud_team, enemy_team, castle, stage_play_time
+    enemy_count = random.randint(5,10)
 
     castle = Castle()
-    #print(background)
     background = load_image('resource/background.png')
     print(background)
-    CloudTeam = [Cloud('resource/cloud01.png'), Cloud('resource/cloud01.png'),Cloud('resource/cloud02.png'),Cloud('resource/cloud02.png')]
-    EnemyTeam = []
+    cloud_team = [Cloud('resource/big_cloud.png'), Cloud('resource/big_cloud.png'),Cloud('resource/small_cloud.png'),Cloud('resource/small_cloud.png')]
+    enemy_team = []
 
-    for i in range(EnemyCount):
-        e = enemy.Enemy()
-        e.x = -((((80 - 5) / (EnemyCount - 1)) * i + 5) * 100 * e.speed)
-        EnemyTeam.append(e)
-    for i in range(EnemyCount):
-        e = enemy.Enemy02()
-        e.x = -((((80 - 5) / (EnemyCount - 1)) * i + 5) * 100 * e.speed)
-        EnemyTeam.append(e)
+    for i in range(enemy_count):
+        e = enemy.Enemy_Normal()
+        e.x = -((((80 - 5) / (enemy_count - 1)) * i + 5) * 100 * e.running_speed)
+        enemy_team.append(e)
 
-        print(i, ";", EnemyTeam[i].x)
+    for i in range(enemy_count):
+        e = enemy.Enemy_Crush()
+        e.x = -((((80 - 5) / (enemy_count - 1)) * i + 5) * 100 * e.running_speed)
+        enemy_team.append(e)
 
-    playTime = 0.0
+    for i in range(enemy_count):
+        e = enemy.Enemy_Giant()
+        e.x = -((((80 - 5) / (enemy_count - 1)) * i + 5) * 100 * e.running_speed)
+        enemy_team.append(e)
+
+    stage_play_time = 0.0
 
 def update():
-    global CloudTeam, EnemyTeam, castle, playTime
-    for c in CloudTeam:
+    global cloud_team, enemy_team, castle, stage_play_time, castle_HP
+    for c in cloud_team:
         c.update()
-    for e in EnemyTeam:
+    for e in enemy_team:
         e.update()
-        if e.isHit:
-            castle.castleHP -= 1
-            e.isHit = False
-    if castle.castleHP == 0:
+        if(e.state == 'attacking' and e.attacking_frame == 0):
+            castle.castle_HP -= 0.1
+    if (castle.castle_HP == 0):
         game_framework.change_state(lose_state)
 
-    #print(game_framework.getStage())
-    #print(playTime)
-    if playTime >= 50.0:
+    if (stage_play_time >= 50.0):
         game_framework.upStage()
         game_framework.change_state(clear_state)
 
 
 def draw():
-    global background, castle, CloudTeam, EnemyTeam, castleHPBar, castleHP, playTime
+    global background, castle, cloud_team, enemy_team, castle_HP_bar, castle_HP, stage_play_time
     clear_canvas()
 
     background.draw(400, 300)
-
     castle.draw()
 
-    for c in CloudTeam:
+    for c in cloud_team:
         c.draw()
-    for e in EnemyTeam:
+    for e in enemy_team:
         e.draw()
 
 
     update_canvas()
 
-    playTime += 0.01
+    stage_play_time += 0.01
     delay(0.01)
 
 def pause():
@@ -147,11 +146,4 @@ def resume():
     pass
 
 def exit():
-    global background, castle, CloudTeam, EnemyTeam
-    del(background)
-    del(castle)
-    for c in CloudTeam:
-        del(c.image)
-    for e in EnemyTeam:
-        del(e.image)
     pass

@@ -38,17 +38,17 @@ def handle_events():
     events = get_events()
     for event in events:
         if event.type == SDL_QUIT:
-            game_framework.quit()
-            #exit()
+            exit()
         else:
             if (event.type, event.key) == (SDL_KEYDOWN, SDLK_ESCAPE):
-                #game_framework.quit()
                 exit()
             elif (event.type == SDL_MOUSEBUTTONDOWN):
                 if(354 < event.x and event.x < 535 and 370 < event.y and event.y < 400):
                     game_framework.change_state(main_state)
+                if (342 < event.x and event.x < 535 and 163 < event.y and event.y < 188):
+                    game_framework.change_state(main_state)
                 if(event.x >= 409 and event.x <= 476 and 599 - event.y >= 127 and 599 - event.y <= 154):
                     game_framework.quit()
-                #mx = event.x
-                #my = 599 - event.y
-                #print(mx, my)
+                #mouse_x = event.x
+                #mouse_y = 599 - event.y
+                #print(mouse_x, mouse_y)
