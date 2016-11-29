@@ -11,7 +11,7 @@ class Enemy_Base:
     def __init__(self):
         self.x, self.y = 0, random.randint(146, 197)
         self.starting_y = self.y
-        self.falling_started_y = None
+        self.falling_started_y = 0
 
         self.running_speed = random.randint(1, 2) / 2
 
@@ -28,7 +28,6 @@ class Enemy_Base:
     def update(self):
         if (self.state == 'running'):
             self.x += self.running_speed
-            self.running_frame = (self.running_frame + 1) % (4 * 10)
             if (self.y >= 146 and self.y < 160 and self.x >= 436):
                 self.x = 436
                 self.state = 'attacking'
@@ -42,15 +41,17 @@ class Enemy_Base:
         elif (self.state == 'attacking'):
             self.attacking_frame = (self.attacking_frame + 1) % (4 * 10)
 
-        elif (self.state == 'dragging'):
-            if (self.y <= self.starting_y):
-                self.y = self.starting_y
-                if (self.falling_started_y >= 450):
-                    self.state = 'falling'
-                    self.falling_speed += 0.3
-                    self.y -= self.falling_speed
+        elif (self.state == 'falling'):
+            self.falling_speed += 0.3
+            self.y -= self.falling_speed
+            if (self.y <= self.starting_y): # 땅에 부딪혔을 때
+                self.y = self.starting_y # 위치보정
+                if (self.falling_started_y >= 450): # 죽을 높이였으면
+                    self.state = 'dying'
+                    self.dying_frame = 0
                 else:
                     self.state = 'getting_up'
+                    self.getting_up_frame = 0
 
         elif (self.state == 'dying'):
             if (self.dying_frame < 6 * 12):
@@ -60,6 +61,9 @@ class Enemy_Base:
             if (self.getting_up_frame >= 30):
                 self.state = 'running'
             self.getting_up_frame += 1
+
+        if(self.state == 'running' or self.state == 'dragging' or self.state == 'falling'):
+            self.running_frame = (self.running_frame + 1) % (4 * 10)
 
     def draw(self):
         if(self.state == 'running' or self.state == 'dragging' or self.state == 'falling'):
@@ -73,6 +77,8 @@ class Enemy_Base:
 
     def get_bb(self):
         return self.x - self.running_width / 2, self.y - self.running_height / 2, self.x + self.running_width / 2, self.y + self.running_height / 2
+
+    pass
 
 class Enemy_Normal(Enemy_Base):
     def __init__(self):
