@@ -16,6 +16,10 @@ class Castle:
         self.castle_HP_bar = load_image('resource/castle_HP.png')
         self.castle_HP = 100.0
 
+        self.bgm = load_music('sound/background.mp3')
+        self.bgm.set_volume(64)
+        self.bgm.repeat_play()
+
     def draw(self):
         self.castle.draw(433, 300)
         self.castle_HP_bar.draw(507 + 282 / 2 / 100 * self.castle_HP, 562, 282 / 100 * self.castle_HP, 17)

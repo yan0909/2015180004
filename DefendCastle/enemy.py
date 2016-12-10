@@ -8,10 +8,14 @@ class Enemy_Base:
     dying_image = None
     getting_up_image = None
 
+
+
     def __init__(self):
         self.x, self.y = 0, random.randint(146, 197)
         self.starting_y = self.y
         self.falling_started_y = 0
+
+
 
         self.running_speed = random.randint(1, 2) / 2
 
@@ -72,8 +76,10 @@ class Enemy_Base:
             self.attacking_image.clip_draw(math.floor(self.attacking_frame / 10) % 4 * self.attacking_width, 0, self.attacking_width, self.attacking_height, self.x, self.y)
         elif(self.state == 'dying' and self.dying_frame < 6 * 12):
             self.dying_image.clip_draw(math.floor(self.dying_frame / 12) * self.dying_width, 0, self.dying_width, self.dying_height, self.x, self.y)
+
         elif(self.state == 'getting_up'):
             self.getting_up_image.clip_draw(math.floor(self.getting_up_frame / 10) *  self.getting_up_width, 0, self.getting_up_width, self.getting_up_height, self.x, self.y)
+           
 
     def get_bb(self):
         return self.x - self.running_width / 2, self.y - self.running_height / 2, self.x + self.running_width / 2, self.y + self.running_height / 2
