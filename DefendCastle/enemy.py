@@ -8,14 +8,25 @@ class Enemy_Base:
     dying_image = None
     getting_up_image = None
 
-
+    dying_sound = None
+    getting_up_sound = None
 
     def __init__(self):
         self.x, self.y = 0, random.randint(146, 197)
         self.starting_y = self.y
         self.falling_started_y = 0
 
+        if (Enemy_Base.dying_sound == None):
+            Enemy_Base.dying_sound = []
+            Enemy_Base.dying_sound.append(load_music('sound/dying01.mp3'))
+            Enemy_Base.dying_sound.append(load_music('sound/dying02.mp3'))
+            Enemy_Base.dying_sound.append(load_music('sound/dying03.mp3'))
+            for e in Enemy_Base.dying_sound:
+                e.set_volume(64)
 
+        if (Enemy_Base.getting_up_sound == None):
+            Enemy_Base.getting_up_sound = load_music('sound/getting_up.mp3')
+            Enemy_Base.getting_up_sound.set_volume(64)
 
         self.running_speed = random.randint(1, 2) / 2
 
@@ -52,9 +63,12 @@ class Enemy_Base:
                 self.y = self.starting_y # 위치보정
                 if (self.falling_started_y >= 450): # 죽을 높이였으면
                     self.state = 'dying'
+                    r = random.randint(0,2)
+                    Enemy_Base.dying_sound[r].play()
                     self.dying_frame = 0
                 else:
                     self.state = 'getting_up'
+                    Enemy_Base.getting_up_sound.play()
                     self.getting_up_frame = 0
 
         elif (self.state == 'dying'):
@@ -76,10 +90,9 @@ class Enemy_Base:
             self.attacking_image.clip_draw(math.floor(self.attacking_frame / 10) % 4 * self.attacking_width, 0, self.attacking_width, self.attacking_height, self.x, self.y)
         elif(self.state == 'dying' and self.dying_frame < 6 * 12):
             self.dying_image.clip_draw(math.floor(self.dying_frame / 12) * self.dying_width, 0, self.dying_width, self.dying_height, self.x, self.y)
-
         elif(self.state == 'getting_up'):
             self.getting_up_image.clip_draw(math.floor(self.getting_up_frame / 10) *  self.getting_up_width, 0, self.getting_up_width, self.getting_up_height, self.x, self.y)
-           
+
 
     def get_bb(self):
         return self.x - self.running_width / 2, self.y - self.running_height / 2, self.x + self.running_width / 2, self.y + self.running_height / 2

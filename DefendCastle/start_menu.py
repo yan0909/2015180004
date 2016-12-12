@@ -45,6 +45,7 @@ def handle_events():
             elif (event.type == SDL_MOUSEBUTTONDOWN):
                 if(354 < event.x and event.x < 535 and 370 < event.y and event.y < 400):
                     game_framework.change_state(main_state)
+
                 if (342 < event.x and event.x < 535 and 163 < event.y and event.y < 188):
                     game_framework.change_state(main_state)
                 if(event.x >= 409 and event.x <= 476 and 599 - event.y >= 127 and 599 - event.y <= 154):

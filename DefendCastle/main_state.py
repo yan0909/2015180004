@@ -17,7 +17,7 @@ class Castle:
         self.castle_HP = 100.0
 
         self.bgm = load_music('sound/background.mp3')
-        self.bgm.set_volume(64)
+        self.bgm.set_volume(90)
         self.bgm.repeat_play()
 
     def draw(self):
