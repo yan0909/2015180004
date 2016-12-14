@@ -18,9 +18,9 @@ class Enemy_Base:
 
         if (Enemy_Base.dying_sound == None):
             Enemy_Base.dying_sound = []
-            Enemy_Base.dying_sound.append(load_music('sound/dying01.mp3'))
-            Enemy_Base.dying_sound.append(load_music('sound/dying02.mp3'))
-            Enemy_Base.dying_sound.append(load_music('sound/dying03.mp3'))
+            Enemy_Base.dying_sound.append(load_music('sound/dying1.mp3'))
+            Enemy_Base.dying_sound.append(load_music('sound/dying2.mp3'))
+            Enemy_Base.dying_sound.append(load_music('sound/dying3.mp3'))
             for e in Enemy_Base.dying_sound:
                 e.set_volume(64)
 
