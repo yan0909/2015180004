@@ -5,6 +5,7 @@ import main_state
 name = 'StartMenu'
 image = None
 logo_time = 0.0
+menu_sound = None
 
 def enter():
     global image
@@ -44,6 +45,9 @@ def handle_events():
                 exit()
             elif (event.type == SDL_MOUSEBUTTONDOWN):
                 if(354 < event.x and event.x < 535 and 370 < event.y and event.y < 400):
+                    menu_sound = load_music('sound/menu.mp3')
+                    menu_sound.set_volume(90)
+                    menu_sound.play()
                     game_framework.change_state(main_state)
 
                 if (342 < event.x and event.x < 535 and 163 < event.y and event.y < 188):
