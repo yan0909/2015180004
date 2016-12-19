@@ -18,14 +18,14 @@ class Enemy_Base:
 
         if (Enemy_Base.dying_sound == None):
             Enemy_Base.dying_sound = []
-            Enemy_Base.dying_sound.append(load_music('sound/dying1.mp3'))
-            Enemy_Base.dying_sound.append(load_music('sound/dying2.mp3'))
-            Enemy_Base.dying_sound.append(load_music('sound/dying3.mp3'))
+            Enemy_Base.dying_sound.append(load_wav('sound/dying1.wav'))
+            Enemy_Base.dying_sound.append(load_wav('sound/dying2.wav'))
+            Enemy_Base.dying_sound.append(load_wav('sound/dying3.wav'))
             for e in Enemy_Base.dying_sound:
                 e.set_volume(64)
 
         if (Enemy_Base.getting_up_sound == None):
-            Enemy_Base.getting_up_sound = load_music('sound/getting_up.mp3')
+            Enemy_Base.getting_up_sound = load_wav('sound/getting_up.wav')
             Enemy_Base.getting_up_sound.set_volume(64)
 
         self.running_speed = random.randint(1, 2) / 2

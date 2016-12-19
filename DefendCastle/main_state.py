@@ -1,4 +1,7 @@
 from pico2d import *
+from sdl2.events import SDL_QUIT, SDL_KEYDOWN, SDL_MOUSEMOTION, SDL_MOUSEBUTTONDOWN, SDL_MOUSEBUTTONUP
+from sdl2.keycode import SDLK_ESCAPE, SDLK_1, SDLK_2
+
 import enemy
 import random
 import game_framework
@@ -10,6 +13,7 @@ enemy_count, background, castle, cloud_team, enemy_team, target_enemy_index, isM
 stage_play_time = 0.0
 mouse_x, mouse_y = 0, 0
 now_stage = 0
+
 class Castle:
     def __init__(self):
         self.castle = load_image('resource/castle.png')
@@ -17,8 +21,8 @@ class Castle:
         self.castle_HP = 100.0
 
         self.bgm = load_music('sound/background.mp3')
-        self.bgm.set_volume(200)
-        self.bgm.repeat_play()
+        self.bgm.set_volume(100)
+        #self.bgm.repeat_play()
 
     def draw(self):
         self.castle.draw(433, 300)
@@ -51,19 +55,7 @@ def handle_events():
         elif(event.type == SDL_KEYDOWN and event.key == SDLK_ESCAPE):
             game_framework.quit()
         elif (event.type == SDL_KEYDOWN and event.key == SDLK_1):   # 치트키
-            #game_framework.change_state(clear_state)
-            stage_play_time = 9999999
-        elif (event.type == SDL_KEYDOWN and event.key == SDLK_2):   # 치트키
-            game_framework.change_state(lose_state)
-        elif(event.type == SDL_MOUSEMOTION):
-            mouse_x = event.x
-            mouse_y = 599 - event.y
-            #print(mouse_x, mouse_y)
-            if(isMouseDown and target_enemy_index != -1):
-                enemy_team[target_enemy_index].x = mouse_x
-                enemy_team[target_enemy_index].y = mouse_y
-        elif(event.type == SDL_MOUSEBUTTONDOWN):
-            isMouseDown = True
+            #game_framework.change_state(clear_state)1
             mouse_x = event.x
             mouse_y = 599 - event.y
             target_enemy_index = -1
@@ -107,8 +99,8 @@ def handle_events():
 def enter():
     global enemy_count, background, castle, cloud_team, enemy_team, castle, stage_play_time, now_stage
 
-
     castle = Castle()
+    castle.bgm.repeat_play()
     background = load_image('resource/background.png')
     cloud_team = [Cloud('resource/big_cloud.png'), Cloud('resource/big_cloud.png'),Cloud('resource/small_cloud.png'),Cloud('resource/small_cloud.png')]
     enemy_team = []
@@ -120,7 +112,7 @@ def enter():
 
     for i in range(enemy_count):
         e = enemy.Enemy_Normal()
-        e.x = -((((80 - 5) / (enemy_count - 1)) * i + 5) * 100 * e.running_speed) + 500 #######
+        e.x = -((((80 - 5) / (enemy_count - 1)) * i + 5) * 100 * e.running_speed) + 500
         enemy_team.append(e)
 
     if (now_stage >= 3):
@@ -143,7 +135,7 @@ def update():
     for e in enemy_team:
         e.update()
         if(e.state == 'attacking' and e.attacking_frame == 0):
-            castle.castle_HP -= 0.1
+            castle.castle_HP -= 0.5
     if (castle.castle_HP == 0):
         game_framework.change_state(lose_state)
 
