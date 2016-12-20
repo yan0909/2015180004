@@ -1,4 +1,7 @@
 from pico2d import *
+from sdl2.events import SDL_QUIT, SDL_KEYDOWN, SDL_MOUSEBUTTONDOWN
+from sdl2.keycode import SDLK_ESCAPE
+
 import game_framework
 import main_state
 

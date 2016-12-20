@@ -50,12 +50,24 @@ def handle_events():
     global mouse_x, mouse_y, enemy_team, enemy_count, target_enemy_index, isMouseDown, now_stage, stage_play_time
     events = get_events()
     for event in events:
-        if(event.type == SDL_QUIT):
+        if (event.type == SDL_QUIT):
             game_framework.quit()
-        elif(event.type == SDL_KEYDOWN and event.key == SDLK_ESCAPE):
+        elif (event.type == SDL_KEYDOWN and event.key == SDLK_ESCAPE):
             game_framework.quit()
-        elif (event.type == SDL_KEYDOWN and event.key == SDLK_1):   # 치트키
-            #game_framework.change_state(clear_state)1
+        elif (event.type == SDL_KEYDOWN and event.key == SDLK_1):  # 치트키
+            #game_framework.change_state(clear_state)
+            stage_play_time = 9999999
+        elif (event.type == SDL_KEYDOWN and event.key == SDLK_2):  # 치트키
+            game_framework.change_state(lose_state)
+        elif (event.type == SDL_MOUSEMOTION):
+            mouse_x = event.x
+            mouse_y = 599 - event.y
+            # print(mouse_x, mouse_y)
+            if (isMouseDown and target_enemy_index != -1):
+                enemy_team[target_enemy_index].x = mouse_x
+                enemy_team[target_enemy_index].y = mouse_y
+        elif (event.type == SDL_MOUSEBUTTONDOWN):
+            isMouseDown = True
             mouse_x = event.x
             mouse_y = 599 - event.y
             target_enemy_index = -1
@@ -139,7 +151,7 @@ def update():
     if (castle.castle_HP == 0):
         game_framework.change_state(lose_state)
 
-    if (stage_play_time >= 50.0):
+    if (stage_play_time >= 30.0):
         now_stage += 1
         game_framework.change_state(clear_state)
 
