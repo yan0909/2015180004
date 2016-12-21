@@ -58,7 +58,7 @@ def exit():
     del(image)
     pass
 
-def update():
+def update(frame_time):
     pass
 
 def draw():
@@ -89,7 +89,7 @@ def ptInRect(pt, rect):
     return True
     pass
 
-def handle_events():
+def handle_events(frame_time):
     global button_sound, buttons_rect, buttons_over, \
         new_button_rect, load_button_rect, exit_button_rect
 

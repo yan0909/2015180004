@@ -17,7 +17,7 @@ def exit():
     del(image)
     pass
 
-def update():
+def update(frame_time):
     #print(game_framework.getStage())
     pass
 
@@ -37,7 +37,7 @@ def resume():
     print('resume')
     pass
 
-def handle_events():
+def handle_events(frame_time):
     events = get_events()
     for event in events:
         if event.type == SDL_QUIT:

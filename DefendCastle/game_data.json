@@ -1,0 +1,109 @@
+{
+"PIXEL_PER_METER" : 75.0,
+
+"stage_clear_time" : 30.0,
+"enemy_spawn_last_time_sec" : 5.0,
+
+"stage_difficult_change_level_1" : 3,
+"stage_difficult_change_level_2" : 5,
+
+"enemy_count_at_stage0_rand_min" : 5,
+"enemy_count_at_stage0_rand_max" : 10,
+"enemy_count_multi_per_stage" : 1.2,
+
+"enemy_damage" : 0.5,
+
+"Cloud" : {
+"MOVE_SPEED_KMPH" : 2.0,
+"move_speed_rand_min" : 5,
+"move_speed_rand_max" : 10,
+"x_rand_min" : 900,
+"x_rand_max" : 1500,
+"y_rand_min" : 430,
+"y_rand_max" : 500,
+"die_limit_x" : -100.0
+},
+
+"Castle" : {
+"x" : 433,
+"y" : 300,
+
+"castle_HP_bar_x" : 507,
+"castle_HP_bar_y" : 562,
+"castle_HP_bar_w" : 282,
+"castle_HP_bar_h" : 17,
+
+"bgm_volume" : 100,
+
+"castle_HP" : 100.0
+},
+
+"Enemy" : {
+"RUN_SPEED_KMPH" : 3.5,
+"FALL_SPEED_KMPH" : 0.6,
+
+"RUN_TIME_PER_ACTION" : 0.6666667,
+"RUN_FRAMES_PER_ACTION" : 4,
+
+"ATTACK_TIME_PER_ACTION" : 0.6666667,
+"ATTACK_FRAMES_PER_ACTION" : 4,
+
+"DIE_TIME_PER_ACTION" : 1.2,
+"DIE_FRAMES_PER_ACTION" : 6,
+
+"GET_UP_TIME_PER_ACTION" : 0.6666667,
+"GET_UP_FRAMES_PER_ACTION" : 4,
+
+"x" : 0,
+"y_rand_min" : 146,
+"y_rand_max" : 197,
+
+"dying_sound_volume" : 64,
+"getting_up_sound_volume" : 64,
+
+"castle_door_level1_y" : 146,
+"castle_door_level2_y" : 160,
+"castle_door_level3_y" : 178,
+"castle_door_level4_y" : 197,
+"castle_door_level1_x" : 436,
+"castle_door_level2_x" : 420,
+"castle_door_level3_x" : 404,
+
+"height_to_die" : 450,
+
+"Enemy_Normal" : {
+"running_width" : 50,
+"running_height" : 75,
+"attacking_width" : 50,
+"attacking_height" : 75,
+"dying_width" : 70,
+"dying_height" : 100,
+"getting_up_width" : 70,
+"getting_up_height" : 60
+},
+
+"Enemy_Crush" : {
+"running_width" : 80,
+"running_height" : 75,
+"attacking_width" : 80,
+"attacking_height" : 75,
+"dying_width" : 70,
+"dying_height" : 100,
+"getting_up_width" : 70,
+"getting_up_height" : 60
+},
+
+"Enemy_Giant" : {
+"running_width" : 60,
+"running_height" : 120,
+"attacking_width" : 60,
+"attacking_height" : 120,
+"dying_width" : 75,
+"dying_height" : 100,
+"getting_up_width" : 130,
+"getting_up_height" : 120
+}
+
+}
+
+}
