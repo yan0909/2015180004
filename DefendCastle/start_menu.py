@@ -7,6 +7,13 @@ import main_state
 
 name = 'StartMenu'
 image = None
+
+stage_beginning_image = None
+stage_beginning_image_time = 0
+show_image = False
+stage_beginning_sound = None
+
+font = None
 logo_time = 0.0
 button_sound = None
 
@@ -26,15 +33,26 @@ buttons_over = []
 buttons_rect = []
 buttons_image = []
 
+
 def enter():
-    global image, button_sound, \
+    global image, button_sound, font, \
+        stage_beginning_image, show_image, stage_beginning_image_time, stage_beginning_sound, \
         new_button_mouse_over, load_button_mouse_over, exit_button_mouse_over, buttons_over, \
         new_button_rect, load_button_rect, exit_button_rect, buttons_rect, \
         new_button_image, load_button_image, exit_button_image, buttons_image
 
     image = load_image('resource/title.png')
+    stage_beginning_image = load_image('resource/stage_beginning.png')
+
     button_sound = load_wav('sound/menu.wav')
     button_sound.set_volume(90)
+
+    stage_beginning_image_time = 0
+    show_image = False
+    stage_beginning_sound = load_wav('sound/stage_beginning.wav')
+    stage_beginning_sound.set_volume(120)
+
+    font = load_font('font/NANUMBARUNGOTHICBOLD.TTF', 60)
 
     new_button_mouse_over = False
     load_button_mouse_over = False
@@ -54,20 +72,32 @@ def enter():
 
 
 def exit():
-    global image
+    global image, font
     del(image)
+    del(font)
     pass
 
 def update(frame_time):
+    global show_image, stage_beginning_image_time
+    if (show_image == True):
+        stage_beginning_image_time += frame_time
+        if (stage_beginning_image_time > 3.0):
+            show_image = False
+            game_framework.change_state(main_state)
     pass
 
 def draw():
-    global image, buttons_over, buttons_rect, buttons_image
+    global image, buttons_over, buttons_rect, buttons_image, font, show_image
     clear_canvas()
     image.draw(400, 300)
     for index in range(len(buttons_image)):
         if(buttons_over[index]):
             buttons_image[index].draw((buttons_rect[index][0] + buttons_rect[index][2]) / 2, (599 - buttons_rect[index][1] + 599 - buttons_rect[index][3]) / 2)
+    if(show_image == True):
+        stage_beginning_image.draw(400,300)
+        font.draw(500, 310, '1', (0xff, 0xff, 0xff))
+
+
     update_canvas()
     pass
 
@@ -91,7 +121,8 @@ def ptInRect(pt, rect):
 
 def handle_events(frame_time):
     global button_sound, buttons_rect, buttons_over, \
-        new_button_rect, load_button_rect, exit_button_rect
+        new_button_rect, load_button_rect, exit_button_rect, \
+        show_image, stage_beginning_sound
 
 
     events = get_events()
@@ -107,7 +138,8 @@ def handle_events(frame_time):
                 print(mouse_x, mouse_y)
 
                 if(ptInRect(event, new_button_rect)):
-                    game_framework.change_state(main_state)
+                    show_image = True
+                    stage_beginning_sound.play()
                 if (ptInRect(event, load_button_rect)):
                     game_framework.change_state(main_state)
                 if (ptInRect(event, exit_button_rect)):

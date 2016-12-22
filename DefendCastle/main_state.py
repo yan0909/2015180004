@@ -1,6 +1,6 @@
 from pico2d import *
 from sdl2.events import SDL_QUIT, SDL_KEYDOWN, SDL_MOUSEMOTION, SDL_MOUSEBUTTONDOWN, SDL_MOUSEBUTTONUP
-from sdl2.keycode import SDLK_ESCAPE, SDLK_1, SDLK_2
+from sdl2.keycode import SDLK_ESCAPE, SDLK_1, SDLK_2, SDLK_3
 
 import enemy
 import random
@@ -22,6 +22,8 @@ enemy_count, background, castle, cloud_team, enemy_team, target_enemy_index, isM
 stage_play_time = 0.0
 mouse_x, mouse_y = 0, 0
 now_stage = 0
+
+bomb_sound = None
 
 class Castle:
     def __init__(self):
@@ -62,18 +64,23 @@ class Cloud:
     pass
 
 def handle_events(frame_time):
-    global mouse_x, mouse_y, enemy_team, enemy_count, target_enemy_index, isMouseDown, now_stage, stage_play_time
+    global mouse_x, mouse_y, enemy_team, enemy_count, target_enemy_index, isMouseDown, now_stage, stage_play_time, bomb_sound
     events = get_events()
     for event in events:
         if (event.type == SDL_QUIT):
             game_framework.quit()
         elif (event.type == SDL_KEYDOWN and event.key == SDLK_ESCAPE):
             game_framework.quit()
-        elif (event.type == SDL_KEYDOWN and event.key == SDLK_1):  # 치트키
+        elif (event.type == SDL_KEYDOWN and event.key == SDLK_1):  # 스테이지 넘어가는 치트키
             #game_framework.change_state(clear_state)
             stage_play_time = 9999999
-        elif (event.type == SDL_KEYDOWN and event.key == SDLK_2):  # 치트키
+        elif (event.type == SDL_KEYDOWN and event.key == SDLK_2):  # 스테이지 실패 치트키
             game_framework.change_state(lose_state)
+        elif (event.type == SDL_KEYDOWN and event.key == SDLK_3):  # 현재 적들 몰살 치트키
+            for enemy in enemy_team:
+                if (enemy.x > 0):
+                    enemy.state = 'dying'
+                    bomb_sound.play()
         elif (event.type == SDL_MOUSEMOTION):
             mouse_x = event.x
             mouse_y = 599 - event.y
@@ -124,10 +131,12 @@ def handle_events(frame_time):
 
 
 def enter():
-    global enemy_count, background, castle, cloud_team, enemy_team, castle, stage_play_time, now_stage
+    global enemy_count, background, castle, cloud_team, enemy_team, castle, stage_play_time, now_stage, font, bomb_sound
 
     castle = Castle()
     castle.bgm.repeat_play()
+    bomb_sound = load_wav('sound/bomb.wav')
+    bomb_sound.set_volume(60)
     background = load_image('resource/background.png')
     cloud_team = [Cloud('resource/big_cloud.png'), Cloud('resource/big_cloud.png'),Cloud('resource/small_cloud.png'),Cloud('resource/small_cloud.png')]
     enemy_team = []
@@ -170,6 +179,9 @@ def update(frame_time):
 
     if (stage_play_time >= JSON_DATA['stage_clear_time']):
         now_stage += 1
+        f = open('now_stage','w')
+        f.write('%d' % now_stage)
+        f.close()
         game_framework.change_state(clear_state)
 
     stage_play_time += frame_time
